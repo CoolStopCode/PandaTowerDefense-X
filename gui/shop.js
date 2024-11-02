@@ -40,7 +40,7 @@ const dropdownMenu = document.createElement('div');
 dropdownMenu.style.position = 'fixed';
 dropdownMenu.style.left = '50%';
 dropdownMenu.style.transform = 'translateX(-50%)';
-dropdownMenu.style.width = '68%'; // Width of the dropdown (slightly thinner than the top bar)
+dropdownMenu.style.width = '50%'; // Width of the dropdown (slightly thinner than the top bar)
 dropdownMenu.style.height = '0px'; // Start with height as 0 to hide it initially
 dropdownMenu.style.backgroundColor = 'rgba(85, 85, 85, 0.8)'; // Background color with transparency for glass effect
 dropdownMenu.style.borderRadius = '0 0 15px 15px'; // Rounded bottom corners
@@ -68,7 +68,7 @@ dropdownButton.style.top = '70px'; // Position it just below the top bar
 document.body.appendChild(dropdownButton);
 
 // Array of colors for the squares (pandas)
-const colors = ['#FF5733', '#33FF57', '#3357FF', '#F0F33A', '#FF33A8', '#33F3FF'];
+const colors = ['#FF5733', '#33FF57', '#3357FF', '#F0F33A', '#FF33A8', '#33F3FF', '#FF5733', '#33FF57', '#3357FF', '#F0F33A', '#FF33A8', '#33F3FF'];
 
 // Create pandas and append them to the dropdown
 function createPandas() {
@@ -87,11 +87,11 @@ function createPandas() {
     // Create pandas
     colors.forEach(color => {
         const panda = document.createElement('div');
-        panda.style.width = '40px'; // Width for pandas
-        panda.style.height = '40px'; // Height for pandas
+        panda.style.width = '60px'; // Width for pandas
+        panda.style.height = '60px'; // Height for pandas
         panda.style.backgroundColor = color; // Panda color
         panda.style.borderRadius = '10px'; // Rounded corners
-        panda.style.border = '3px solid rgba(0, 0, 0, 0.5)'; // Darker outline
+        panda.style.border = '6px solid rgba(0, 0, 0, 0.2)'; // Darker outline
         panda.style.margin = '0 5px'; // Spacing between pandas
         dropdownMenu.appendChild(panda); // Add panda to the dropdown
     });
@@ -113,7 +113,7 @@ const animationDuration = 200; // milliseconds
 
 function toggleDropdown() {
     isDropdownOpen = !isDropdownOpen;
-    const maxDropdownHeight = 70; // Height of the dropdown
+    const maxDropdownHeight = 100; // Height of the dropdown
     const closedTop = 70; // Top position of the dropdown button when closed
     const openTop = closedTop + maxDropdownHeight; // New position of the button when open
 
