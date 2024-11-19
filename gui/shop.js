@@ -69,9 +69,9 @@ Object.assign(dropdownButton.style, {
 document.body.appendChild(dropdownButton);
 
 // Panda colors
-const colors = ['#FF5733', '#33FF57', '#3357FF', '#F0F33A', '#FF33A8', '#33F3FF', '#FF5733', '#33FF57', '#3357FF', '#F0F33A', '#FF33A8', '#33F3FF'];
+const colors = ['#FF5733', '#33FF57', '#3357FF', '#F0F33A', '#FF33A8', '#33F3FF'];
 
-// Panda container for horizontal scrolling
+// Container for pandas and infinite scrolling setup
 const pandaContainer = document.createElement('div');
 Object.assign(pandaContainer.style, {
     display: 'flex',
@@ -79,12 +79,15 @@ Object.assign(pandaContainer.style, {
     width: '100%',
     padding: '10px',
     gap: '10px',
+    position: 'relative',
 });
 dropdownMenu.appendChild(pandaContainer);
 
-// Create pandas and append them to the container
+// Create pandas and add clones for seamless infinite scroll
 function createPandas() {
     pandaContainer.innerHTML = '';
+    
+    // Original pandas
     colors.forEach(color => {
         const panda = document.createElement('div');
         Object.assign(panda.style, {
@@ -97,28 +100,49 @@ function createPandas() {
         });
         pandaContainer.appendChild(panda);
     });
+
+    // Cloned pandas at the end
+    colors.forEach(color => {
+        const pandaClone = document.createElement('div');
+        Object.assign(pandaClone.style, {
+            width: '60px',
+            height: '60px',
+            backgroundColor: color,
+            borderRadius: '10px',
+            border: '6px solid rgba(0, 0, 0, 0.2)',
+            flexShrink: '0',
+        });
+        pandaClone.id = "pandaClone" + color
+        pandaContainer.appendChild(pandaClone);
+    });
 }
 
-// Enable precise horizontal scrolling with mouse wheel
-const pandaWidth = 60; // Width of a panda
+// Infinite scroll implementation
+const pandaWidth = 60; // Width of each panda
 const gap = 10; // Gap between pandas
 const scrollStep = pandaWidth + gap;
-let targetScrollLeft = 0; // Tracks the target scroll position
+let targetScrollLeft = 0;
 
 pandaContainer.addEventListener('wheel', (e) => {
     e.preventDefault();
 
-    // Update the target scroll position based on scroll direction
+    // Set target scroll position with each scroll tick
     targetScrollLeft += e.deltaY > 0 ? scrollStep : -scrollStep;
 
-    // Clamp the target position to the container's scrollable bounds
-    targetScrollLeft = Math.max(0, Math.min(pandaContainer.scrollWidth - pandaContainer.clientWidth, targetScrollLeft));
-
-    // Animate scrolling to the target position smoothly
+    // Smoothly scroll to the target position
     pandaContainer.scrollTo({
         left: targetScrollLeft,
         behavior: 'smooth'
     });
+
+    // Loop back to the start or end seamlessly
+    if (targetScrollLeft >= pandaContainer.scrollWidth / 2) {
+        targetScrollLeft = 0; // Reset to the start
+        pandaContainer.scrollLeft = 0;
+    } else if (targetScrollLeft <= 0) {
+        targetScrollLeft = pandaContainer.scrollWidth / 2; // Reset to end clone
+        pandaContainer.scrollLeft = pandaContainer.scrollWidth / 2;
+    }
 });
 
 // Toggle dropdown visibility
